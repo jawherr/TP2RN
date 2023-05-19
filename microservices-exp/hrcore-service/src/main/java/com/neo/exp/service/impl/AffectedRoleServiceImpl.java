@@ -77,7 +77,7 @@ public class AffectedRoleServiceImpl implements AffectedRoleService{
         log.debug("Request to update affected role : {}", affectedRoleDto);
 
         boolean existe = roleRepository.existsById(affectedRoleDto.getId());
-        if (!existe){
+        if (existe){
             var userId = affectedRoleDto.getUser_id();
             var user = this.userRepository.findById(userId)
                     .orElseThrow(() ->
@@ -125,7 +125,7 @@ public class AffectedRoleServiceImpl implements AffectedRoleService{
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Affected role : {}", id);
+        log.debug("Request to delete affected role : {}", id);
 
         var affectedRole = this.affectedRoleRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find affected role with id " + id));

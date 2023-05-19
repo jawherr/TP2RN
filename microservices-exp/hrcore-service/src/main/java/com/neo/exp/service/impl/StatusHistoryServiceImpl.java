@@ -35,30 +35,24 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
     @Override
     public MessageResponse create(StatusHistoryDto statusHistoryDto) {
         log.debug("Request to create status history : {}", statusHistoryDto);
+        var userId = statusHistoryDto.getUser_id();
+        var user = this.userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new IllegalStateException("The user with ID[" + userId + "] was not found !"));
 
-        boolean existe = statusHistoryRepository.existsById(statusHistoryDto.getId());
-        if (!existe){
-            var userId = statusHistoryDto.getUser_id();
-            var user = this.userRepository.findById(userId)
-                    .orElseThrow(() ->
-                            new IllegalStateException("The user with ID[" + userId + "] was not found !"));
+        StatusHistoryEntity statusHistory = new StatusHistoryEntity(
+                statusHistoryDto.getAffectationEffectiveDate(),
+                statusHistoryDto.getAffectationEndDate(),
+                statusHistoryDto.getStatusCode(),
+                user
+        );
+        this.statusHistoryRepository.save(statusHistory);
 
-            StatusHistoryEntity statusHistory = new StatusHistoryEntity(
-                    statusHistoryDto.getAffectationEffectiveDate(),
-                    statusHistoryDto.getAffectationEndDate(),
-                    statusHistoryDto.getStatusCode(),
-                    user
-            );
-            this.statusHistoryRepository.save(statusHistory);
-
-            return new MessageResponse(
-                    true,
-                    "Success",
-                    mapToDto(statusHistory)
-            );
-        } else {
-            throw new IllegalStateException("There is already an status History");
-        }
+        return new MessageResponse(
+                true,
+                "Success",
+                mapToDto(statusHistory)
+        );
     }
 
     @Override
@@ -88,7 +82,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService {
                     mapToDto(statusHistory)
             );
         } else {
-            throw new IllegalStateException("There is already an status History");
+            throw new IllegalStateException("There is already an status history");
         }
     }
     @Override

@@ -39,7 +39,7 @@ public class DynamicCrConfigTranslatableServiceImpl implements DynamicCrConfigTr
         var dynamicCrConfigId = dynamicCrConfigTranslatableDto.getDynamicCrConfiguration_id();
         var dynamicCrConfig = this.dynamicCrConfigRepository.findById(dynamicCrConfigId)
                 .orElseThrow(() ->
-                        new IllegalStateException("The dynamic cr configId with ID[" + dynamicCrConfigId + "] was not found !"));
+                        new IllegalStateException("The dynamic cr config id with ID[" + dynamicCrConfigId + "] was not found !"));
 
         DynamicCrConfigTranslatableEntity dynamicCrConfigTranslatable = new DynamicCrConfigTranslatableEntity(
                 dynamicCrConfigTranslatableDto.getLabel(),
@@ -58,14 +58,14 @@ public class DynamicCrConfigTranslatableServiceImpl implements DynamicCrConfigTr
 
     @Override
     public MessageResponse update(DynamicCrConfigTranslatableDto dynamicCrConfigTranslatableDto) {
-        log.debug("Request to update dynamic cr configuration : {}", dynamicCrConfigTranslatableDto);
+        log.debug("Request to update dynamic cr configuration translatable : {}", dynamicCrConfigTranslatableDto);
 
         boolean existe = dynamicCrConfigRepository.existsById(dynamicCrConfigTranslatableDto.getId());
-        if (!existe){
+        if (existe){
             var dynamicCrConfigId = dynamicCrConfigTranslatableDto.getDynamicCrConfiguration_id();
             var dynamicCrConfig = this.dynamicCrConfigRepository.findById(dynamicCrConfigId)
                     .orElseThrow(() ->
-                            new IllegalStateException("The dynamic cr configId with ID[" + dynamicCrConfigId + "] was not found !"));
+                            new IllegalStateException("The dynamic cr config with ID[" + dynamicCrConfigId + "] was not found !"));
 
             DynamicCrConfigTranslatableEntity dynamicCrConfigTranslatable = new DynamicCrConfigTranslatableEntity(
                     dynamicCrConfigTranslatableDto.getId(),
@@ -83,18 +83,18 @@ public class DynamicCrConfigTranslatableServiceImpl implements DynamicCrConfigTr
                     mapToDto(dynamicCrConfigTranslatable)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an dynamic cr config translatable");
         }
     }
 
     @Override
     public DynamicCrConfigTranslatableDto findById(Long id) {
-        log.debug("Request to get dynamic cr config : {}", id);
+        log.debug("Request to get dynamic cr config translatable: {}", id);
         return this.dynamicCrConfigTranslatableRepository.findById(id).map(DynamicCrConfigTranslatableServiceImpl::mapToDto).orElse(null);
     }
 
     public List<DynamicCrConfigTranslatableDto> findAll() {
-        log.debug("Request to get all affected role");
+        log.debug("Request to get all dynamic cr config translatable");
         return this.dynamicCrConfigTranslatableRepository.findAll()
                 .stream()
                 .map(DynamicCrConfigTranslatableServiceImpl::mapToDto)
@@ -103,7 +103,7 @@ public class DynamicCrConfigTranslatableServiceImpl implements DynamicCrConfigTr
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete contract : {}", id);
+        log.debug("Request to delete dynamic cr config translatable : {}", id);
 
         var affectedRole = this.dynamicCrConfigTranslatableRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find dynamic cr config translatable with id " + id));

@@ -61,7 +61,7 @@ public class DynamicCrConfigurationServiceImpl implements DynamicCrConfiguration
         log.debug("Request to update dynamic cr configuration : {}", dynamicCrConfigurationDto);
 
         boolean existe = dynamicCrConfigurationRepository.existsById(dynamicCrConfigurationDto.getId());
-        if (!existe){
+        if (existe){
             DynamicCrConfigurationEntity dynamicCrConfiguration = new DynamicCrConfigurationEntity(
                     dynamicCrConfigurationDto.getId(),
                     Instant.now(),
@@ -82,7 +82,7 @@ public class DynamicCrConfigurationServiceImpl implements DynamicCrConfiguration
                     mapToDto(dynamicCrConfiguration)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an dynamic cr configuration");
         }
     }
 
@@ -93,7 +93,7 @@ public class DynamicCrConfigurationServiceImpl implements DynamicCrConfiguration
     }
 
     public List<DynamicCrConfigurationDto> findAll() {
-        log.debug("Request to get all affected role");
+        log.debug("Request to get all dynamic cr config");
         return this.dynamicCrConfigurationRepository.findAll()
                 .stream()
                 .map(DynamicCrConfigurationServiceImpl::mapToDto)
@@ -102,7 +102,7 @@ public class DynamicCrConfigurationServiceImpl implements DynamicCrConfiguration
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete contract : {}", id);
+        log.debug("Request to delete dynamic cr config : {}", id);
 
         var affectedRole = this.dynamicCrConfigurationRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find dynamic cr config with id " + id));

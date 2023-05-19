@@ -64,7 +64,7 @@ public class SiteServiceImpl implements SiteService {
         log.debug("Request to update site : {}", siteDto);
 
         boolean existe = siteRepository.existsById(siteDto.getId());
-        if (!existe){
+        if (existe){
             SiteEntity site = new SiteEntity(
                     siteDto.getId(),
                     Instant.now(),
@@ -86,7 +86,7 @@ public class SiteServiceImpl implements SiteService {
                     mapToDto(site)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an site");
         }
     }
 
@@ -97,7 +97,7 @@ public class SiteServiceImpl implements SiteService {
     }
 
     public List<SiteDto> findAll() {
-        log.debug("Request to get all affected role");
+        log.debug("Request to get all site");
         return this.siteRepository.findAll()
                 .stream()
                 .map(SiteServiceImpl::mapToDto)
@@ -106,7 +106,7 @@ public class SiteServiceImpl implements SiteService {
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Affected role : {}", id);
+        log.debug("Request to delete site : {}", id);
 
         var site = this.siteRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find site with id " + id));

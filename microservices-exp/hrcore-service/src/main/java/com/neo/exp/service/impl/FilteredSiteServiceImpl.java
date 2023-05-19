@@ -66,7 +66,7 @@ public class FilteredSiteServiceImpl implements FilteredSiteService {
         log.debug("Request to update filtered site : {}", filteredSiteDto);
 
         boolean existe = filteredSiteRepository.existsById(filteredSiteDto.getId());
-        if (!existe){
+        if (existe){
             var affectedRoleId = filteredSiteDto.getAffectedRole_id();
             var affectedRole = this.affectedRoleRepository.findById(affectedRoleId)
                     .orElseThrow(() ->
@@ -92,7 +92,7 @@ public class FilteredSiteServiceImpl implements FilteredSiteService {
                     mapToDto(filteredSite)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is no already an filtered site");
         }
     }
 

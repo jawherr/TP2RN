@@ -67,8 +67,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         boolean existe = organizationRepository.existsById(organizationDto.getId());
         if (existe){
-
-
             OrganizationEntity organization = new OrganizationEntity(
                     organizationDto.getId(),
                     Instant.now(),

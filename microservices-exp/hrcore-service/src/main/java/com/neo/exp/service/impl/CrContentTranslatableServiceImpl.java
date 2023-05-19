@@ -69,7 +69,7 @@ public class CrContentTranslatableServiceImpl implements CrContentTranslatableSe
         log.debug("Request to update cr cr content translatable : {}", crContentTranslatableDto);
 
         boolean existe = crContentRepository.existsById(crContentTranslatableDto.getId());
-        if (!existe){
+        if (existe){
             var crContentId = crContentTranslatableDto.getCrContent_id();
             var crContent = this.crContentRepository.findById(crContentId)
                     .orElseThrow(() ->
@@ -94,7 +94,7 @@ public class CrContentTranslatableServiceImpl implements CrContentTranslatableSe
                     mapToDto(crContentTranslatable)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an cr content translatable");
         }
     }
 
@@ -105,7 +105,7 @@ public class CrContentTranslatableServiceImpl implements CrContentTranslatableSe
     }
 
     public List<CrContentTranslatableDto> findAll() {
-        log.debug("Request to get all cr content");
+        log.debug("Request to get all cr content translatable");
         return this.crContentTranslatableRepository.findAll()
                 .stream()
                 .map(CrContentTranslatableServiceImpl::mapToDto)
@@ -117,7 +117,7 @@ public class CrContentTranslatableServiceImpl implements CrContentTranslatableSe
         log.debug("Request to delete cr content translatable : {}", id);
 
         var crContentTranslatable = this.crContentTranslatableRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Cannot find cr content with id " + id));
+                .orElseThrow(() -> new IllegalStateException("Cannot find cr content translatable with id " + id));
 
         //Optional.ofNullable(affectedRole.getUser()).ifPresent(userRepository::delete);
         //Optional.ofNullable(affectedRole.getRole()).ifPresent(roleRepository::delete);

@@ -55,10 +55,10 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public MessageResponse update(FunctionDto functionDto) {
-        log.debug("Request to update affected role : {}", functionDto);
+        log.debug("Request to update function : {}", functionDto);
 
         boolean existe = functionRepository.existsById(functionDto.getId());
-        if (!existe){
+        if (existe){
             FunctionEntity function = new FunctionEntity(
                     functionDto.getId(),
                     Instant.now(),
@@ -77,7 +77,7 @@ public class FunctionServiceImpl implements FunctionService {
                     mapToDto(function)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an function");
         }
     }
 
@@ -97,7 +97,7 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Affected role : {}", id);
+        log.debug("Request to delete function : {}", id);
 
         var function = this.functionRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find function with id " + id));

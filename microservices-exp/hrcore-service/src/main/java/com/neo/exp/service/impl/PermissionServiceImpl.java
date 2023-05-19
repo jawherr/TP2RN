@@ -35,32 +35,27 @@ public class PermissionServiceImpl implements PermissionService {
     public MessageResponse create(PermissionDto permissionDto) {
         log.debug("Request to create permission : {}", permissionDto);
 
-        boolean existe = permissionRepository.existsById(permissionDto.getId());
-        if (!existe){
-            var permissionId = permissionDto.getChild_permission_id();
-            var permission = this.permissionRepository.findById(permissionId)
-                    .orElseThrow(() ->
-                            new IllegalStateException("The permission with ID[" + permissionId + "] was not found !"));
+        var permissionId = permissionDto.getChild_permission_id();
+        var permission = this.permissionRepository.findById(permissionId)
+                .orElseThrow(() ->
+                        new IllegalStateException("The permission with ID[" + permissionId + "] was not found !"));
 
-            PermissionEntity permissionEntity = new PermissionEntity(
-                    permissionDto.getLabel(),
-                    permissionDto.getCode(),
-                    permissionDto.getHasChildren(),
-                    Collections.emptySet(),
-                    permission,
-                    Collections.emptySet()
-            );
+        PermissionEntity permissionEntity = new PermissionEntity(
+                permissionDto.getLabel(),
+                permissionDto.getCode(),
+                permissionDto.getHasChildren(),
+                Collections.emptySet(),
+                permission,
+                Collections.emptySet()
+        );
 
-            this.permissionRepository.save(permission);
+        this.permissionRepository.save(permission);
 
-            return new MessageResponse(
-                    true ,
-                    "Success",
-                    mapToDto(permission)
-            );
-        } else {
-            throw new IllegalStateException("There is already an permission");
-        }
+        return new MessageResponse(
+                true ,
+                "Success",
+                mapToDto(permission)
+        );
     }
 
     @Override
@@ -93,17 +88,17 @@ public class PermissionServiceImpl implements PermissionService {
                     mapToDto(permission)
             );
         } else {
-            throw new IllegalStateException("There is already an organization");
+            throw new IllegalStateException("There is already an permission");
         }
     }
     @Override
     public PermissionDto findById(Long id) {
-        log.debug("Request to get filtered permission : {}", id);
+        log.debug("Request to get permission : {}", id);
         return this.permissionRepository.findById(id).map(PermissionServiceImpl::mapToDto).orElse(null);
     }
     @Override
     public List<PermissionDto> findAll() {
-        log.debug("Request to get all filtered permission");
+        log.debug("Request to get all permission");
         return this.permissionRepository.findAll()
                 .stream()
                 .map(PermissionServiceImpl::mapToDto)

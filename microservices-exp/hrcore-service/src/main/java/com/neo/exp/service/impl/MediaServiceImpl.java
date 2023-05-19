@@ -36,29 +36,24 @@ public class MediaServiceImpl implements MediaService {
     public MessageResponse create(MediaDto mediaDto) {
         log.debug("Request to create media : {}", mediaDto);
 
-        boolean existe = folderRepository.existsById(mediaDto.getId());
-        if (!existe){
-            var folderId = mediaDto.getFolder_id();
-            var folder = this.folderRepository.findById(folderId)
-                    .orElseThrow(() ->
-                            new IllegalStateException("The folder with ID[" + folderId + "] was not found !"));
+        var folderId = mediaDto.getFolder_id();
+        var folder = this.folderRepository.findById(folderId)
+                .orElseThrow(() ->
+                        new IllegalStateException("The folder with ID[" + folderId + "] was not found !"));
 
-            MediaEntity media = new MediaEntity(
-                    folder,
-                    mediaDto.getExtension(),
-                    mediaDto.getLink()
-            );
+        MediaEntity media = new MediaEntity(
+                folder,
+                mediaDto.getExtension(),
+                mediaDto.getLink()
+        );
 
-            this.mediaRepository.save(media);
+        this.mediaRepository.save(media);
 
-            return new MessageResponse(
-                    true ,
-                    "Success",
-                    mapToDto(media)
-            );
-        } else {
-            throw new IllegalStateException("There is already an media");
-        }
+        return new MessageResponse(
+                true ,
+                "Success",
+                mapToDto(media)
+        );
     }
 
     @Override

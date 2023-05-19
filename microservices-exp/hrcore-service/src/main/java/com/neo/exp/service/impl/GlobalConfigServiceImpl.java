@@ -33,23 +33,18 @@ public class GlobalConfigServiceImpl implements GlobalConfigService {
     public MessageResponse create(GlobalConfigDto globalConfigDto) {
         log.debug("Request to create global config : {}", globalConfigDto);
 
-        boolean existe = globalConfigRepository.existsById(globalConfigDto.getId());
-        if (!existe){
-            GlobalConfigEntity globalConfig = new GlobalConfigEntity(
-                    globalConfigDto.getTenant(),
-                    globalConfigDto.getLogo()
-            );
+        GlobalConfigEntity globalConfig = new GlobalConfigEntity(
+                globalConfigDto.getTenant(),
+                globalConfigDto.getLogo()
+        );
 
-            this.globalConfigRepository.save(globalConfig);
+        this.globalConfigRepository.save(globalConfig);
 
-            return new MessageResponse(
-                    true ,
-                    "Success",
-                    mapToDto(globalConfig)
-            );
-        } else {
-            throw new IllegalStateException("There is already an folder");
-        }
+        return new MessageResponse(
+                true ,
+                "Success",
+                mapToDto(globalConfig)
+        );
     }
 
     @Override
@@ -73,7 +68,7 @@ public class GlobalConfigServiceImpl implements GlobalConfigService {
                     mapToDto(globalConfig)
             );
         } else {
-            throw new IllegalStateException("There is already an folder");
+            throw new IllegalStateException("There is already an global config");
         }
     }
     @Override

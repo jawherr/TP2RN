@@ -82,7 +82,7 @@ public class ContractServiceImpl implements ContractService {
         log.debug("Request to update contract : {}", contractDto);
 
         boolean existe = contractRepository.existsById(contractDto.getId());
-        if (!existe){
+        if (existe){
             var userId = contractDto.getUser_id();
             var user = this.userRepository.findById(userId)
                     .orElseThrow(() ->
@@ -115,18 +115,18 @@ public class ContractServiceImpl implements ContractService {
                     mapToDto(contract)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an contract");
         }
     }
 
     @Override
     public ContractDto findById(Long id) {
-        log.debug("Request to get affected role : {}", id);
+        log.debug("Request to get contract : {}", id);
         return this.contractRepository.findById(id).map(ContractServiceImpl::mapToDto).orElse(null);
     }
 
     public List<ContractDto> findAll() {
-        log.debug("Request to get all affected role");
+        log.debug("Request to get all contract");
         return this.contractRepository.findAll()
                 .stream()
                 .map(ContractServiceImpl::mapToDto)

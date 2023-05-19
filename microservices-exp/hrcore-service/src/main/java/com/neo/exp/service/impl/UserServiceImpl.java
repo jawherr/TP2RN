@@ -92,13 +92,15 @@ public class UserServiceImpl implements UserService {
                     userDto.getContactInfo(),
                     Collections.emptySet()
             );
+            this.userRepository.save(user);
+            System.out.println("user= "+user);
             return new MessageResponse(
                     true,
                     "Success",
                     mapToDto(user)
             );
         } else {
-            throw new IllegalStateException("There is already an status History");
+            throw new IllegalStateException("There is already an user");
         }
     }
 
@@ -143,13 +145,14 @@ public class UserServiceImpl implements UserService {
                     userDto.getContactInfo(),
                     Collections.emptySet()
             );
+            this.userRepository.save(user);
             return new MessageResponse(
                     true,
                     "Success",
                     mapToDto(user)
             );
         } else {
-            throw new IllegalStateException("There is already an status History");
+            throw new IllegalStateException("There is already an user");
         }
     }
 

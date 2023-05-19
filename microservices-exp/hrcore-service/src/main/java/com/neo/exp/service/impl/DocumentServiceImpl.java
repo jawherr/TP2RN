@@ -61,7 +61,7 @@ public class DocumentServiceImpl implements DocumentService {
         log.debug("Request to update document : {}", documentDto);
 
         boolean existe = documentRepository.existsById(documentDto.getId());
-        if (!existe){
+        if (existe){
             var functionId = documentDto.getFunction_id();
             var function = this.functionRepository.findById(functionId)
                     .orElseThrow(() ->
@@ -83,18 +83,18 @@ public class DocumentServiceImpl implements DocumentService {
                     mapToDto(document)
             );
         } else {
-            throw new IllegalStateException("There is already an function");
+            throw new IllegalStateException("There is already an document");
         }
     }
 
     @Override
     public DocumentDto findById(Long id) {
-        log.debug("Request to get affected role : {}", id);
+        log.debug("Request to get document : {}", id);
         return this.documentRepository.findById(id).map(DocumentServiceImpl::mapToDto).orElse(null);
     }
 
     public List<DocumentDto> findAll() {
-        log.debug("Request to get all affected role");
+        log.debug("Request to get all document");
         return this.documentRepository.findAll()
                 .stream()
                 .map(DocumentServiceImpl::mapToDto)
@@ -103,7 +103,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Affected role : {}", id);
+        log.debug("Request to delete document : {}", id);
 
         var document = this.documentRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find document with id " + id));

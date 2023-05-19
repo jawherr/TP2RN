@@ -63,7 +63,7 @@ public class TeamServiceImpl implements TeamService {
         log.debug("Request to update team : {}", teamDto);
 
         boolean existe = teamRepository.existsById(teamDto.getId());
-        if (!existe){
+        if (existe){
             var organizationId = teamDto.getOrganization_id();
             var organization = this.organizationRepository.findById(organizationId)
                     .orElseThrow(() ->
@@ -86,18 +86,18 @@ public class TeamServiceImpl implements TeamService {
                     mapToDto(team)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an team");
         }
     }
 
     @Override
     public TeamDto findById(Long id) {
-        log.debug("Request to get affected role : {}", id);
+        log.debug("Request to get team : {}", id);
         return this.teamRepository.findById(id).map(TeamServiceImpl::mapToDto).orElse(null);
     }
 
     public List<TeamDto> findAll() {
-        log.debug("Request to get all affected role");
+        log.debug("Request to get all team");
         return this.teamRepository.findAll()
                 .stream()
                 .map(TeamServiceImpl::mapToDto)

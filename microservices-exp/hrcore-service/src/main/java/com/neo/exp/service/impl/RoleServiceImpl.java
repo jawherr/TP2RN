@@ -34,25 +34,20 @@ public class RoleServiceImpl implements RoleService {
     public MessageResponse create(RoleDto roleDto) {
         log.debug("Request to create role : {}", roleDto);
 
-        boolean existe = roleRepository.existsById(roleDto.getId());
-        if (!existe){
-            RoleEntity role= new RoleEntity(
-                    Collections.emptySet(),
-                    roleDto.getLabel(),
-                    roleDto.getVisibility(),
-                    roleDto.getTenant(),
-                    Collections.emptySet()
-            );
-            this.roleRepository.save(role);
+        RoleEntity role= new RoleEntity(
+                Collections.emptySet(),
+                roleDto.getLabel(),
+                roleDto.getVisibility(),
+                roleDto.getTenant(),
+                Collections.emptySet()
+        );
+        this.roleRepository.save(role);
 
-            return new MessageResponse(
-                    true,
-                    "Success",
-                    mapToDto(role)
-            );
-        } else {
-            throw new IllegalStateException("There is already an role");
-        }
+        return new MessageResponse(
+                true,
+                "Success",
+                mapToDto(role)
+        );
     }
     @Override
     public MessageResponse update(RoleDto roleDto) {

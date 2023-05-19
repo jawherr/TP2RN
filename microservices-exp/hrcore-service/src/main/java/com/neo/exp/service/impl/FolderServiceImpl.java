@@ -38,31 +38,26 @@ public class FolderServiceImpl implements FolderService {
     public MessageResponse create(FolderDto folderDto) {
         log.debug("Request to create folder : {}", folderDto);
 
-        boolean existe = folderRepository.existsById(folderDto.getId());
-        if (!existe){
-            var userId = folderDto.getUserId();
-            var user = this.userRepository.findById(userId)
-                    .orElseThrow(() ->
-                            new IllegalStateException("The user with ID[" + userId + "] was not found !"));
+        var userId = folderDto.getUserId();
+        var user = this.userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new IllegalStateException("The user with ID[" + userId + "] was not found !"));
 
-            FolderEntity folder = new FolderEntity(
-                    user,
-                    folderDto.getCode(),
-                    folderDto.getLabel(),
-                    folderDto.getTenant(),
-                    Collections.emptySet()
-            );
+        FolderEntity folder = new FolderEntity(
+                user,
+                folderDto.getCode(),
+                folderDto.getLabel(),
+                folderDto.getTenant(),
+                Collections.emptySet()
+        );
 
-            this.folderRepository.save(folder);
+        this.folderRepository.save(folder);
 
-            return new MessageResponse(
-                    true ,
-                    "Success",
-                    mapToDto(folder)
-            );
-        } else {
-            throw new IllegalStateException("There is already an folder");
-        }
+        return new MessageResponse(
+                true ,
+                "Success",
+                mapToDto(folder)
+        );
     }
     @Override
     public MessageResponse update(FolderDto folderDto) {

@@ -37,32 +37,27 @@ public class FilteredOrganizationServiceImpl implements FilteredOrganizationServ
     public MessageResponse create(FilteredOrganizationDto filteredOrganizationDto) {
         log.debug("Request to create filtered organization : {}", filteredOrganizationDto);
 
-        boolean existe = filteredOrganizationRepository.existsById(filteredOrganizationDto.getId());
-        if (!existe){
-            var organizationId = filteredOrganizationDto.getOrganization_id();
-            var organization = this.organizationRepository.findById(organizationId)
-                    .orElseThrow(() ->
-                            new IllegalStateException("The organization with ID[" + organizationId + "] was not found !"));
-            var affectedRoleId = filteredOrganizationDto.getAffectedRole_id();
-            var affectedRole = this.affectedRoleRepository.findById(affectedRoleId)
-                    .orElseThrow(() ->
-                            new IllegalStateException("The affected role with ID[" + affectedRoleId + "] was not found !"));
+        var organizationId = filteredOrganizationDto.getOrganization_id();
+        var organization = this.organizationRepository.findById(organizationId)
+                .orElseThrow(() ->
+                        new IllegalStateException("The organization with ID[" + organizationId + "] was not found !"));
+        var affectedRoleId = filteredOrganizationDto.getAffectedRole_id();
+        var affectedRole = this.affectedRoleRepository.findById(affectedRoleId)
+                .orElseThrow(() ->
+                        new IllegalStateException("The affected role with ID[" + affectedRoleId + "] was not found !"));
 
-            FilteredOrganizationEntity filteredOrganization = new FilteredOrganizationEntity(
-                    organization,
-                    affectedRole
-            );
+        FilteredOrganizationEntity filteredOrganization = new FilteredOrganizationEntity(
+                organization,
+                affectedRole
+        );
 
-            this.filteredOrganizationRepository.save(filteredOrganization);
+        this.filteredOrganizationRepository.save(filteredOrganization);
 
-            return new MessageResponse(
-                    true ,
-                    "Success",
-                    mapToDto(filteredOrganization)
-            );
-        } else {
-            throw new IllegalStateException("There is already an filtered organization");
-        }
+        return new MessageResponse(
+                true ,
+                "Success",
+                mapToDto(filteredOrganization)
+        );
     }
 
 
@@ -118,7 +113,7 @@ public class FilteredOrganizationServiceImpl implements FilteredOrganizationServ
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Filtered organization : {}", id);
+        log.debug("Request to delete filtered organization : {}", id);
 
         var filteredOrganization = this.filteredOrganizationRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find filtered organization with id " + id));

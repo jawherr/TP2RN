@@ -37,7 +37,7 @@ public class CrContentServiceImpl implements CrContentService {
 
     @Override
     public MessageResponse create(CrContentDto crContentDto) {
-        log.debug("Request to create cr content role : {}", crContentDto);
+        log.debug("Request to create cr content : {}", crContentDto);
 
         var dynamicCrConfigurationId = crContentDto.getDynamicCrConfiguration_id();
         var dynamicCrConfiguration = this.dynamicCrConfigurationRepository.findById(dynamicCrConfigurationId)
@@ -65,10 +65,10 @@ public class CrContentServiceImpl implements CrContentService {
 
     @Override
     public MessageResponse update(CrContentDto crContentDto) {
-        log.debug("Request to update cr content role : {}", crContentDto);
+        log.debug("Request to update cr content : {}", crContentDto);
 
         boolean existe = crContentRepository.existsById(crContentDto.getId());
-        if (!existe){
+        if (existe){
             var dynamicCrConfigurationId = crContentDto.getDynamicCrConfiguration_id();
             var dynamicCrConfiguration = this.dynamicCrConfigurationRepository.findById(dynamicCrConfigurationId)
                     .orElseThrow(() ->
@@ -94,13 +94,13 @@ public class CrContentServiceImpl implements CrContentService {
                     mapToDto(crContent)
             );
         } else {
-            throw new IllegalStateException("There is already an affected role");
+            throw new IllegalStateException("There is already an cr content");
         }
     }
 
     @Override
     public CrContentDto findById(Long id) {
-        log.debug("Request to get affected role : {}", id);
+        log.debug("Request to get cr content : {}", id);
         return this.crContentRepository.findById(id).map(CrContentServiceImpl::mapToDto).orElse(null);
     }
 
@@ -114,7 +114,7 @@ public class CrContentServiceImpl implements CrContentService {
 
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete Affected role : {}", id);
+        log.debug("Request to delete cr content : {}", id);
 
         var affectedRole = this.crContentRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Cannot find cr content with id " + id));
